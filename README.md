@@ -20,8 +20,8 @@ Boilerplate/Generator Project for building RESTful APIs using Typescript, Expres
 
 ## Installations
 
-Copy `.env.example` to `.env`
-Copy `modules/config/config.ts.template` to `modules/config/config.ts`
+- Copy `.env.example` to `.env`
+- Copy `modules/config/config.ts.template` to `modules/config/config.ts`
 
 1. yarn install
 2. yarn run start:watch
