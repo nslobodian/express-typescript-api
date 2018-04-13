@@ -67,8 +67,8 @@ export class Server {
 
   public config () {
     Raven.config(
-      cebulaConfig.sentry.enabled === true
-        ? cebulaConfig.sentry.dsn || ''
+      config.sentry.enabled === true
+        ? config.sentry.dsn || ''
         : false,
       {
         name: 'api',
