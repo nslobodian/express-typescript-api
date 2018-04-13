@@ -1,0 +1,214 @@
+import * as express from 'express'
+
+import { {{ properCase name}}ServiceBuilder } from './{{name}}.service'
+import { Pagination } from '../_common/pagination'
+import { validationMiddleware } from '../_common/middlewares/validation.middleware'
+import { Create{{ properCase name}}RequestDto } from './dto/create-{{name}}-request.dto'
+import { Update{{ properCase name}}RequestDto } from './dto/update-{{name}}-request.dto'
+
+const {{name}}Router = express.Router()
+
+/**
+ * @swagger
+ * definitions:
+ *   {{ properCase name}}:
+ *     type: object
+ *     properties:
+ *       id:
+ *         type: string
+ *       name:
+ *         type: string
+ *       createdAt:
+ *         type: string
+ *       updatedAt:
+ *         type: string
+ *       isDeleted:
+ *         type: boolean
+ *     example:
+ *      "id": "bead1356-f05f-4bd9-9c85-7d0b19c6aed0"
+ *      "createdAt": "2018-02-22T13:27:25.042Z"
+ *      "updatedAt": "2018-02-22T13:27:25.042Z"
+ *      "isDeleted": false
+ *      "name": "Test"
+ */
+
+/**
+ * @swagger
+ * /{{ pluralize name}}:
+ *   get:
+ *     summary: Returns list of {{ pluralize name}}
+ *     tags:
+ *      - {{ properCase name}}s
+ *     parameters:
+ *       - $ref: '#/parameters/perPage'
+ *       - $ref: '#/parameters/page'
+ *       - $ref: '#/parameters/with'
+ *       - $ref: '#/parameters/sorts'
+ *       - $ref: '#/parameters/filters'
+ *     responses:
+ *       200:
+ *         schema:
+ *           type: object
+ *           properties:
+ *             pagination:
+ *               type: object
+ *               $ref: '#/definitions/Pagination'
+ *             data:
+ *               type: array
+ *               items:
+ *                 $ref: '#/definitions/{{ properCase name}}'
+ */
+
+/**
+ * @swagger
+ * /{{ pluralize name}}:
+ *   post:
+ *     summary: Add new {{name}}
+ *     tags:
+ *       - {{ properCase name}}s
+ *     parameters:
+ *       - in: body
+ *         name: body
+ *         required: true
+ *         description: {{name}} name
+ *         schema:
+ *          type: object
+ *          properties:
+ *            name:
+ *              type: string
+ *              example: Support of Spider-man
+ *     responses:
+ *       201:
+ *         schema:
+ *           type: object
+ *           $ref: '#/definitions/{{ properCase name}}'
+ */
+
+{{name}}Router.route('/')
+  .get(async function (req: express.Request, res, next) {
+    try {
+      const {{name}}Service = new {{ properCase name}}ServiceBuilder()
+      const query = req.query
+
+      res.status(200).json(await {{name}}Service.find({
+        pagination: new Pagination(query.page, query.perPage),
+        relations: query.with ? query.with.split(',') : null,
+        sorts: query.sorts ? query.sorts.split(',') : null,
+        filters: query.filters ? query.filters.split(',') : null,
+      }))
+    } catch (err) {
+      next(err)
+    }
+  })
+  .post(
+    validationMiddleware(Create{{ properCase name}}RequestDto),
+    async function (req: express.Request, res, next) {
+      try {
+        const {{name}}Service = new {{ properCase name}}ServiceBuilder()
+
+        const {{name}} = await {{name}}Service.create(req.body)
+        res.status(201).json({{name}})
+      } catch (err) {
+        next(err)
+      }
+    })
+
+/**
+ * @swagger
+ * /{{ pluralize name}}/{id}:
+ *   get:
+ *     summary: Get a {{name}} with specific id
+ *     tags:
+ *      - {{ properCase name}}s
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         type: string
+ *     responses:
+ *       200:
+ *         $ref: '#/definitions/{{ properCase name}}'
+ *       404:
+ *         description: get non-existing {{name}}
+ *         schema:
+ *           $ref: '#/definitions/Error'
+ *
+ *   put:
+ *     summary: Update {{name}}
+ *     tags:
+ *      - {{ properCase name}}s
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         type: string
+ *       - in: body
+ *         name: body
+ *         required: true
+ *         description: {{name}} name
+ *         schema:
+ *          $ref: '#/definitions/{{ properCase name}}'
+ *     responses:
+ *       200:
+ *         $ref: '#/definitions/{{ properCase name}}'
+ *       404:
+ *         description: update non-existing {{name}}
+ *         schema:
+ *           $ref: '#/definitions/Error'
+ *
+ *   delete:
+ *     summary: Delete specific {{name}}
+ *     tags:
+ *      - {{ properCase name}}s
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: delete at first time
+ *         $ref: '#/definitions/{{ properCase name}}'
+ *       404:
+ *         description: delete non-existing {{name}}
+ *         schema:
+ *           $ref: '#/definitions/Error'
+ */
+
+{{name}}Router.route('/:id')
+  .get(
+    async function (req: express.Request, res, next) {
+      try {
+        const {{name}}Service = new {{ properCase name}}ServiceBuilder()
+        const {{name}}Id = req.params.id
+
+        const {{name}} = await {{name}}Service.findOne({{name}}Id)
+        res.status(200).json({{name}})
+      } catch (err) {
+        next(err)
+      }
+    })
+  .delete(
+    async function (req: express.Request, res, next) {
+      try {
+        const {{name}}Service = new {{ properCase name}}ServiceBuilder()
+        const {{name}}Id = req.params.id
+
+        const {{name}} = await {{name}}Service.delete({{name}}Id)
+        res.status(200).json({{name}})
+      } catch (err) {
+        next(err)
+      }
+    })
+  .put(
+    validationMiddleware(Update{{ properCase name}}RequestDto),
+    async function (req: express.Request, res, next) {
+      try {
+        const {{name}}Service = new {{ properCase name}}ServiceBuilder()
+        const {{name}}Id = req.params.id
+
+        const {{name}} = await {{name}}Service.update({{name}}Id, req.body)
+        res.status(200).json({{name}})
+      } catch (err) {
+        next(err)
+      }
+    })
+
+export { {{name}}Router }

@@ -1,0 +1,48 @@
+import { getRepository } from 'typeorm'
+
+import { FactoryService, ServiceFindOptions, ServiceListResult } from '../_common/serviceFactory'
+import { {{ properCase name}} } from './{{name}}.entity'
+import { NotFoundHttpError } from '../_common/errors/NotFoundHttpError'
+import { Create{{ properCase name}}RequestDto } from './dto/create-{{name}}-request.dto'
+import { Update{{ properCase name}}RequestDto } from './dto/update-{{name}}-request.dto'
+
+export class {{ properCase name}}ServiceBuilder extends FactoryService<{{ properCase name}}> {
+  constructor () {
+    const {{name}}Repo = getRepository<{{ properCase name}}>({{ properCase name}})
+    super({{name}}Repo, '{{name}}')
+  }
+
+  find (options?: ServiceFindOptions): Promise<ServiceListResult<{{ properCase name}}>> {
+    return this.getManyWithOptions(options)
+  }
+
+  async findOne (id: string, options: { relations?: string[] } = {}): Promise<{{ properCase name}}> {
+    const {{name}} = await this.getNotDeletedOne(id, options)
+
+    if (!{{name}}) {
+      throw new NotFoundHttpError(`{{ properCase name}} #${id} not found.`)
+    }
+
+    return {{name}}
+  }
+
+  async create (dto: Create{{ properCase name}}RequestDto): Promise<{{ properCase name}}> {
+    const {{name}} = this.repository.create(dto)
+    return this.save({{name}}) as Promise<{{ properCase name}}>
+  }
+
+  async update (id: string, dto: Update{{ properCase name}}RequestDto): Promise<{{ properCase name}}> {
+    const result = await this.repository.findOneById(id)
+    if (!result) {
+      throw new NotFoundHttpError(`{{ properCase name}} #${id} not found.`)
+    }
+
+    const {{name}} = Object.assign({}, result, dto)
+    return this.repository.save({{name}})
+  }
+
+  async delete (id: string): Promise<{{ properCase name}}> {
+    const {{name}} = Object.assign({}, await this.repository.findOneById(id), { isDeleted: true })
+    return this.repository.save({{name}})
+  }
+}

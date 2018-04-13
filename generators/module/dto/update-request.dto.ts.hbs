@@ -1,0 +1,15 @@
+import { IsString, IsOptional } from 'class-validator'
+
+type Update{{ properCase name}}RequestDtoType = {
+  name?: string
+}
+
+export class Update{{ properCase name}}RequestDto {
+  @IsString()
+  @IsOptional()
+  name?: string
+
+  constructor (data: Update{{ properCase name}}RequestDtoType) {
+    this.name = data.name
+  }
+}

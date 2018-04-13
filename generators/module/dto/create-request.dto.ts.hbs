@@ -1,0 +1,14 @@
+import { IsString } from 'class-validator'
+
+type Create{{ properCase name}}RequestDtoType = {
+  name: string
+}
+
+export class Create{{ properCase name}}RequestDto {
+  @IsString()
+  name: string
+
+  constructor (data: Create{{ properCase name}}RequestDtoType) {
+    this.name = data.name
+  }
+}
