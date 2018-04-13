@@ -1,0 +1,58 @@
+
+parameters:
+  page:
+    name: page
+    description: Number of the page
+    in: query
+    type: Integer
+    default: 0
+  perPage:
+    name: perPage
+    description: Count of items per page
+    in: query
+    type: Integer
+    default: 10
+  with:
+    name: with
+    in: query
+    type: string
+    description: Join related fields, separated by comma
+  sorts:
+    name: sorts
+    in: query
+    type: string
+    description: Sort by fields -field (DESC), +field (ASC), separated by comma
+  filters:
+    name: filters
+    in: query
+    type: string
+    description: filer by fields 'name:value' or 'name:>value', separated by comma
+definitions:
+  Pagination:
+    type: object
+    properties:
+      page:
+        type: integer
+      pages:
+        type: integer
+      perPage:
+        type: integer
+      totalCount:
+        type: integer
+    example:
+      page: 1
+      pages: 2
+      perPage: 10
+      totalCount: 15
+  Error:
+    type: object
+    properties:
+      message:
+        type: string
+        default: Item not found.
+      status:
+        type: string
+        default: Not Found
+      statusCode:
+        type: integer
+        default: 404

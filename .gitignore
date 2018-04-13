@@ -1,0 +1,22 @@
+# package directories
+node_modules
+
+# Webpack directories
+.webpack
+
+.build
+keys/
+
+# dist
+dist
+
+# OS
+.DS_Store
+
+# Other
+.vagrant
+
+# Secrets
+.env
+src/config
+ormconfig.json

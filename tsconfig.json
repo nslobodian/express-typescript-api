@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": false,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "removeComments": true,
+    "noLib": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "es2016",
+    "sourceMap": true,
+    "allowJs": false,
+    "lib": ["es2017", "es2015.promise"],
+    "outDir": "dist",
+    "typeRoots": [
+      "@types",
+      "./types"
+    ]
+  },
+  "include": [
+    "modules/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "fixtures",
+    "modules/migrations/**/*"
+  ]
+}
